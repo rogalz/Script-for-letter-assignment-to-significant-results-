@@ -68,15 +68,34 @@ for i, row_val in enumerate(indices[:-1]):  # skip last row
             if val == '-':
                 row_dash_index = max(row_dash_index, j)
 
-    # Skip row if last '-' is at the same column as previous
     if row_dash_index != last_dash_index:
         table.append(row)
         last_dash_index = row_dash_index
 
-    # Stop if last column is '-'
     if row_dash_index == len(indices) - 1:
         break
 
+#*********************************************************************************************************
+# Check which columns have no '-' at all
+cols_without_dash = []
+for col_idx in range(len(indices)):
+    col_has_dash = False
+    for row in table:
+        if '-' in row[col_idx + 1]:
+            col_has_dash = True
+            break
+    if not col_has_dash:
+        cols_without_dash.append(col_idx)
+
+# If any column has no dash, append an extra row with dashes only in those columns
+if cols_without_dash:
+    new_row = ['|']
+    for col_idx in range(len(indices)):
+        if col_idx in cols_without_dash:
+            new_row.append(' - |')
+        else:
+            new_row.append('   |')
+    table.append(new_row)
 
 #*********************************************************************************************************
 # Generate letter indicators below the table
@@ -84,14 +103,15 @@ letter_row = ['|']
 for col_idx in range(len(indices)):
     letters = ''
     for row_idx, row in enumerate(table):
-        cell_value = row[col_idx + 1]  # komórka w tabeli
+        cell_value = row[col_idx + 1]
         if '-' in cell_value:
-            letters += string.ascii_lowercase[row_idx]  # litera wg numeru wiersza
+            letters += string.ascii_lowercase[row_idx]
     letter_row.append(f' {letters} |')
 
 # Append the letter row to the table
 table.append(letter_row)
 
+#*********************************************************************************************************
 # Print header
 header = '| ' + ' | '.join(map(str, indices)) + ' |'
 print(header)
