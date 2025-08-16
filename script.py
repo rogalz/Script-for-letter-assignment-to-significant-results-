@@ -2,8 +2,8 @@ import pandas as pd
 from itertools import combinations
 import string
 
-input_file = "input_egzofity.xlsx"
-significant_file = "significant_ezgofity.xlsx"
+input_file = "input.xlsx"
+significant_file = "significance.xlsx"
 
 # Load the Excel file and set 'x' column as index
 df = pd.read_excel(input_file).set_index("x")
@@ -20,7 +20,7 @@ indices = list(sorted_averages.index)
 
 # Load the comparison Excel file
 comp_df = pd.read_excel(significant_file, header=None)
-comp_df.columns = ["pair", "value", "range", "fourth_col", "ns",]
+comp_df.columns = ["pair", "value", "range", "fourth_col", "ns","dupa"]
 
 # Function to get the 4th column given a pair
 def get_fourth_col(a, b):
